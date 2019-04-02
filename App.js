@@ -1,15 +1,25 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, Button } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { Constants, Location, Permissions } from 'expo';
+import Mapview, { Marker, Callout }  from 'react-native-maps';
+import PopUp from './components/Popup';
 
 export default class App extends Component {
 
-  state = {
-    location: null,
-    error: null,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      location: {
+        coords: {
+          latitude: 41.39777459141653,
+          longitude: 2.190523770780123
+        }
+      },
+      error: null,
+    };
+  }
 
-  componentWillMount() {
+  async componentWillMount() {
     if (Platform.OS === 'android' && !Constants.isDevice) {
       this.setState({
         errorMessage: 'Oops, this will not work on Sketch in an Android emulator. Try it on your device!',
@@ -31,18 +41,25 @@ export default class App extends Component {
     this.setState({ location });
   };
 
-  findISS() {
-    return null;
-  }
-
   render() {
     return (
-      <View style={styles.container}>
-        <Button 
-          onPress={this.findISS}
-          title='When will the ISS pass over me?'
-        />
-      </View>
+      <Mapview
+        style={{flex: 1}}
+        initialRegion={{
+          latitude: this.state.location.coords.latitude,
+          longitude: this.state.location.coords.longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
+      >
+        <Marker 
+          coordinate={{latitude: 41.39777459141653, longitude: 2.190523770780123}}
+        >
+        <Callout>
+          <PopUp />
+        </Callout>
+        </Marker>
+      </Mapview>
     );
   }
 }
