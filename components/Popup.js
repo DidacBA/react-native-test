@@ -2,24 +2,32 @@ import React, { Component } from 'react';
 import { Text, Button } from 'react-native';
 
 export default class Popup extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
-      pressed: false,
+      pushed: false,
     }
   }
+
+  updateState = () => {
+    this.setState({
+      pushed: !this.state.pushed,
+    })
+  } 
 
   render() {
     return (
       <>
         <Text>
-          Hola
+          I am a popup
         </Text>
         <Button 
           title="Push me!"
-          onPress={() => this.setState({ pressed: !this.state.pressed })} 
+          color="#841584"
+          onPress={() => this.updateState()} 
         />
-        {this.state.pressed ? <Text>Pushed</Text> : <Text>Not pushed</Text>}
+        {this.state.pushed ? <Text>Pushed</Text> : <Text>Not pushed</Text>}
       </>
     )
   }
